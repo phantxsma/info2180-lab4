@@ -61,12 +61,51 @@ $superheroes = [
       "alias" => "Scarlett Witch",
       "biography" => "Notably powerful, Wanda Maximoff has fought both against and with the Avengers, attempting to hone her abilities and do what she believes is right to help the world.",
   ], 
-];
+]; 
+
+
+function printAllHeroes(){
+    global $superheroes;
+
+    echo "<ul>";
+        
+    foreach($superheroes as $superhero): 
+        echo "<li>" . $superhero['alias'] . "</li>";
+    endforeach;
+    
+    echo "</ul>";    
+}
+
+function searchSuperheroes($input) {
+
+    global $superheroes;
+
+    $outputAlias = array_search($input, array_column($superheroes, 'alias'));
+    $outputName = array_search($input, array_column($superheroes, 'name'));
+
+    if ($outputName !== false){
+        echo "<h3>" . $superheroes[$outputName]['alias'] . "</h3>";
+        echo "<h4>" . "A.K.A " . $superheroes[$outputName]['name'] . "</h4>";
+        echo "<p>" . $superheroes[$outputName]['biography'] . "</p>";
+    } elseif ($outputAlias !== false){
+        echo "<h3>" . $superheroes[$outputAlias]['alias'] . "</h3>";
+        echo "<h4>" . "A.K.A " . $superheroes[$outputAlias]['name'] . "</h4>";
+        echo "<p>" . $superheroes[$outputAlias]['biography'] . "</p>";
+    } else {
+        echo "<h5>" . "Superhero not found!" . "</h5>";
+    }
+}
+
+function driver($searchParam){
+    if ($searchParam !== '') {
+        searchSuperheroes($searchParam);
+    } else {
+        printAllHeroes();
+    }
+}
+
+
+$searchParam = isset($_GET['query']) ? $_GET['query'] : '';
+driver($searchParam);
 
 ?>
-
-<ul>
-<?php foreach ($superheroes as $superhero): ?>
-  <li><?= $superhero['alias']; ?></li>
-<?php endforeach; ?>
-</ul>
